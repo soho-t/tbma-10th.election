@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>理事投票 - 台北市公寓大廈管理維護商業同業公會</title>
+    <style>
+        :root {
+            --primary-color: #2196F3;
+            --primary-hover: #1976D2;
+            --danger-color: #f44336;
+            --danger-hover: #d32f2f;
+            --success-color: #4CAF50;
+            --success-hover: #45a049;
+            --text-color: #333;
+            --border-color: #e0e0e0;
+            --bg-color: #f5f5f5;
+            --card-bg: #ffffff;
+        }
+
+        body {
+            font-family: 'Microsoft JhengHei', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .header {
+            text-align: center;
+            padding: 20px;
+            background-color: var(--card-bg);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            color: var(--primary-color);
+            margin: 0;
+            font-size: 1.8em;
+        }
+
+        .header h2 {
+            color: var(--primary-color);
+            margin: 10px 0 0;
+            font-size: 1.5em;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .section {
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--primary-hover));
+        }
+
+        .section h2 {
+            color: var(--primary-color);
+            font-size: 1.8em;
+            margin: 0 0 25px 0;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--border-color);
+            position: relative;
+        }
+
+        .section h2::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background-color: var(--primary-color);
+        }
+
+        .section:first-child {
+            background-color: #f8f9fa;
+        }
+
+        .section:last-child {
+            background-color: #ffffff;
+        }
+
+        .divider {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
+            margin: 20px 0;
+        }
+
+        .candidate-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .candidate-item {
+            padding: 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background-color: #fff;
+            transition: all 0.2s;
+        }
+
+        .candidate-item:hover {
+            border-color: var(--primary-color);
+            box-shadow: 0 2px 8px rgba(33, 150, 243, 0.2);
+        }
+
+        .candidate-item input[type="checkbox"] {
+            margin-right: 8px;
+        }
+
+        .result-item {
+            margin: 10px 0;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            border: 2px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 16px;
+            transition: border-color 0.2s;
+        }
+
+        input[type="text"]:focus, input[type="password"]:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.1);
+        }
+
+        button {
+            padding: 12px 24px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.2s;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+
+        .error-message {
+            color: var(--danger-color);
+            margin: 8px 0;
+            padding: 8px;
+            background-color: #ffebee;
+            border-radius: 4px;
+            border-left: 4px solid var(--danger-color);
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 6px;
+            text-decoration: none;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+
+        .back-button:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .results-section {
+            margin-bottom: 30px;
+        }
+
+        .results-section h4 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            padding-bottom: 5px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .verification-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        .verification-table th,
+        .verification-table td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid var(--border-color);
+        }
+
+        .verification-table th {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .verification-table tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        .verification-table tr:hover {
+            background-color: #e9ecef;
+        }
+
+        .result-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .result-card {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            border: 1px solid var(--border-color);
+            text-align: center;
+        }
+
+        .result-card .rank {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 8px;
+        }
+
+        .result-card .name {
+            font-size: 1.1em;
+            margin-bottom: 8px;
+        }
+
+        .result-card .votes {
+            color: var(--success-color);
+            font-weight: bold;
+        }
+
+        .total-votes {
+            text-align: center;
+            font-size: 1.2em;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: #e3f2fd;
+            border-radius: 8px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 1.5em;
+            }
+
+            .header h2 {
+                font-size: 1.2em;
+            }
+
+            .candidate-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .verification-table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="back-button">返回首頁</a>
+
+    <div class="header">
+        <h1>台北市公寓大廈管理維護商業同業公會</h1>
+        <h2>(第十屆)理事投票</h2>
+    </div>
+
+    <div class="container">
+        <div class="section">
+            <h2>投票結果</h2>
+            <div id="resultLogin">
+                <input type="password" id="resultPassword" placeholder="請輸入管理員密碼">
+                <button onclick="loginResult()">查看結果</button>
+                <div id="resultError" class="error-message"></div>
+            </div>
+            <div id="voteResults" style="display: none;"></div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="section">
+            <h2>候選人列表</h2>
+            <input type="text" id="voterCode" placeholder="請輸入驗證碼">
+            <div id="candidateList" class="candidate-grid"></div>
+            <button onclick="submitVote()">提交投票</button>
+        </div>
+    </div>
+
+    <script>
+        let candidates = [];
+        let verificationCodes = new Set();
+        let usedCodes = new Map();
+        let votes = new Map();
+        const ADMIN_PASSWORD = "admin123"; // 預設管理員密碼
+
+        // 從 localStorage 讀取數據
+        function loadData() {
+            const savedCandidates = localStorage.getItem('directorCandidates');
+            const savedCodes = localStorage.getItem('directorVerificationCodes');
+            const savedVotes = localStorage.getItem('directorVotes');
+            const savedUsedCodes = localStorage.getItem('directorUsedCodes');
+
+            if (savedCandidates) candidates = JSON.parse(savedCandidates);
+            if (savedCodes) verificationCodes = new Set(JSON.parse(savedCodes));
+            if (savedVotes) votes = new Map(JSON.parse(savedVotes));
+            if (savedUsedCodes) usedCodes = new Map(JSON.parse(savedUsedCodes));
+
+            updateCandidateList();
+        }
+
+        // 保存數據到 localStorage
+        function saveData() {
+            localStorage.setItem('directorCandidates', JSON.stringify(candidates));
+            localStorage.setItem('directorVerificationCodes', JSON.stringify([...verificationCodes]));
+            localStorage.setItem('directorVotes', JSON.stringify([...votes]));
+            localStorage.setItem('directorUsedCodes', JSON.stringify([...usedCodes]));
+        }
+
+        function loginResult() {
+            const password = document.getElementById('resultPassword').value;
+            if (password === ADMIN_PASSWORD) {
+                document.getElementById('resultLogin').style.display = 'none';
+                document.getElementById('voteResults').style.display = 'block';
+                document.getElementById('resultError').textContent = '';
+                updateResults();
+            } else {
+                document.getElementById('resultError').textContent = '密碼錯誤！';
+            }
+        }
+
+        function updateCandidateList() {
+            const container = document.getElementById('candidateList');
+            container.innerHTML = '';
+            candidates.forEach((candidate, index) => {
+                const div = document.createElement('div');
+                div.className = 'candidate-item';
+                div.innerHTML = `
+                    <input type="checkbox" id="candidate${index}" value="${candidate}">
+                    <label for="candidate${index}">${candidate}</label>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function submitVote() {
+            const code = document.getElementById('voterCode').value;
+            if (!verificationCodes.has(code)) {
+                alert('無效的驗證碼！');
+                return;
+            }
+            if (usedCodes.has(code)) {
+                alert('此驗證碼已被使用！');
+                return;
+            }
+
+            const selectedCandidates = [];
+            candidates.forEach((_, index) => {
+                const checkbox = document.getElementById(`candidate${index}`);
+                if (checkbox.checked) {
+                    selectedCandidates.push(checkbox.value);
+                }
+            });
+
+            if (selectedCandidates.length === 0) {
+                alert('請至少選擇一位候選人！');
+                return;
+            }
+            if (selectedCandidates.length > 15) {
+                alert('最多只能選擇15位候選人！');
+                return;
+            }
+
+            usedCodes.set(code, selectedCandidates);
+            selectedCandidates.forEach(candidate => {
+                votes.set(candidate, (votes.get(candidate) || 0) + 1);
+            });
+
+            saveData();
+            updateResults();
+            document.getElementById('voterCode').value = '';
+            alert('投票成功！');
+        }
+
+        function updateResults() {
+            const sortedCandidates = [...votes.entries()]
+                .sort((a, b) => b[1] - a[1]);
+            
+            const resultsDiv = document.getElementById('voteResults');
+            resultsDiv.innerHTML = `
+                <h3>投票結果</h3>
+                <div class="results-section">
+                    <h4>得票統計</h4>
+                    <div class="total-votes">共有 ${usedCodes.size} 人投票</div>
+                    <div class="result-grid">
+                        ${sortedCandidates.map(([candidate, count], index) => `
+                            <div class="result-card">
+                                <div class="rank">第 ${index + 1} 名</div>
+                                <div class="name">${candidate}</div>
+                                <div class="votes">${count} 票</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+                <div class="results-section">
+                    <h4>驗證碼使用紀錄</h4>
+                    <div id="verificationHistoryLogin">
+                        <input type="password" id="historyPassword" placeholder="請輸入管理員密碼">
+                        <button onclick="showVerificationHistory()">查看驗證碼使用紀錄</button>
+                        <div id="historyError" class="error-message"></div>
+                    </div>
+                    <div id="verificationHistory" style="display: none;">
+                        <table class="verification-table">
+                            <thead>
+                                <tr>
+                                    <th>驗證碼</th>
+                                    <th>選擇的候選人</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${[...usedCodes.entries()].map(([code, candidates]) => `
+                                    <tr>
+                                        <td>${code}</td>
+                                        <td>${candidates.join('、')}</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
+        }
+
+        function showVerificationHistory() {
+            const password = document.getElementById('historyPassword').value;
+            if (password === ADMIN_PASSWORD) {
+                document.getElementById('verificationHistoryLogin').style.display = 'none';
+                document.getElementById('verificationHistory').style.display = 'block';
+                document.getElementById('historyError').textContent = '';
+            } else {
+                document.getElementById('historyError').textContent = '密碼錯誤！';
+            }
+        }
+
+        // 頁面載入時讀取數據
+        loadData();
+    </script>
+</body>
+</html> 

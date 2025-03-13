@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>管理員 - 台北市公寓大廈管理維護商業同業公會</title>
+    <style>
+        :root {
+            --primary-color: #2196F3;
+            --primary-hover: #1976D2;
+            --danger-color: #f44336;
+            --danger-hover: #d32f2f;
+            --success-color: #4CAF50;
+            --success-hover: #45a049;
+            --text-color: #333;
+            --border-color: #e0e0e0;
+            --bg-color: #f5f5f5;
+            --card-bg: #ffffff;
+        }
+
+        body {
+            font-family: 'Microsoft JhengHei', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .header {
+            text-align: center;
+            padding: 20px;
+            background-color: var(--card-bg);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            color: var(--primary-color);
+            margin: 0;
+            font-size: 1.8em;
+        }
+
+        .header h2 {
+            color: var(--primary-color);
+            margin: 10px 0 0;
+            font-size: 1.5em;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .section {
+            background-color: var(--card-bg);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        .section h3 {
+            margin-top: 0;
+            color: var(--primary-color);
+        }
+
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            border: 2px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 16px;
+            transition: border-color 0.2s;
+        }
+
+        input[type="text"]:focus, input[type="password"]:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.1);
+        }
+
+        button {
+            padding: 12px 24px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.2s;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+
+        .error-message {
+            color: var(--danger-color);
+            margin: 8px 0;
+            padding: 8px;
+            background-color: #ffebee;
+            border-radius: 4px;
+            border-left: 4px solid var(--danger-color);
+        }
+
+        .success-message {
+            color: var(--success-color);
+            margin: 8px 0;
+            padding: 8px;
+            background-color: #e8f5e9;
+            border-radius: 4px;
+            border-left: 4px solid var(--success-color);
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 6px;
+            text-decoration: none;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+
+        .back-button:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .tab-container {
+            display: flex;
+            margin-bottom: 20px;
+            gap: 10px;
+        }
+
+        .tab {
+            padding: 10px 20px;
+            background-color: var(--card-bg);
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            color: var(--text-color);
+            transition: all 0.2s;
+        }
+
+        .tab.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.5em;
+            }
+
+            .header h2 {
+                font-size: 1.2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="back-button">返回首頁</a>
+
+    <div class="header">
+        <h1>台北市公寓大廈管理維護商業同業公會</h1>
+        <h2>管理員功能</h2>
+    </div>
+
+    <div class="container">
+        <div class="section">
+            <div id="loginSection">
+                <h3>管理員登入</h3>
+                <input type="password" id="adminPassword" placeholder="請輸入管理員密碼">
+                <button onclick="loginAdmin()">登入</button>
+                <div id="loginError" class="error-message"></div>
+            </div>
+
+            <div id="adminContent" style="display: none;">
+                <div class="tab-container">
+                    <button class="tab active" onclick="switchTab('director')">理事候選人</button>
+                    <button class="tab" onclick="switchTab('supervisor')">監事候選人</button>
+                    <button class="tab" onclick="switchTab('codes')">驗證碼管理</button>
+                </div>
+
+                <div id="directorTab" class="tab-content active">
+                    <h3>理事候選人管理</h3>
+                    <input type="text" id="directorCandidates" placeholder="請輸入候選人名稱，以.分隔（最多17位）">
+                    <button onclick="addDirectorCandidates()">新增候選人</button>
+                    <div id="directorMessage" class="success-message"></div>
+                </div>
+
+                <div id="supervisorTab" class="tab-content">
+                    <h3>監事候選人管理</h3>
+                    <input type="text" id="supervisorCandidates" placeholder="請輸入候選人名稱，以.分隔（最多17位）">
+                    <button onclick="addSupervisorCandidates()">新增候選人</button>
+                    <div id="supervisorMessage" class="success-message"></div>
+                </div>
+
+                <div id="codesTab" class="tab-content">
+                    <h3>驗證碼管理</h3>
+                    <div class="section">
+                        <h4>理事驗證碼</h4>
+                        <input type="text" id="directorVerificationCodes" placeholder="請輸入理事驗證碼，以.分隔">
+                        <button onclick="addDirectorVerificationCodes()">新增理事驗證碼</button>
+                        <div id="directorCodesMessage" class="success-message"></div>
+                    </div>
+                    <div class="section">
+                        <h4>監事驗證碼</h4>
+                        <input type="text" id="supervisorVerificationCodes" placeholder="請輸入監事驗證碼，以.分隔">
+                        <button onclick="addSupervisorVerificationCodes()">新增監事驗證碼</button>
+                        <div id="supervisorCodesMessage" class="success-message"></div>
+                    </div>
+                </div>
+
+                <button onclick="logoutAdmin()" style="margin-top: 20px; background-color: var(--danger-color);">登出</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const ADMIN_PASSWORD = "admin123"; // 預設管理員密碼
+
+        function loginAdmin() {
+            const password = document.getElementById('adminPassword').value;
+            if (password === ADMIN_PASSWORD) {
+                document.getElementById('loginSection').style.display = 'none';
+                document.getElementById('adminContent').style.display = 'block';
+                document.getElementById('loginError').textContent = '';
+            } else {
+                document.getElementById('loginError').textContent = '密碼錯誤！';
+            }
+        }
+
+        function logoutAdmin() {
+            document.getElementById('loginSection').style.display = 'block';
+            document.getElementById('adminContent').style.display = 'none';
+            document.getElementById('adminPassword').value = '';
+        }
+
+        function switchTab(tabName) {
+            // 更新標籤狀態
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+
+            // 啟用選中的標籤
+            document.querySelector(`.tab[onclick="switchTab('${tabName}')"]`).classList.add('active');
+            document.getElementById(`${tabName}Tab`).classList.add('active');
+        }
+
+        function addDirectorCandidates() {
+            const input = document.getElementById('directorCandidates').value;
+            const newCandidates = input.split('.').filter(c => c.trim());
+            if (newCandidates.length > 17) {
+                alert('候選人數量不能超過17位！');
+                return;
+            }
+            localStorage.setItem('directorCandidates', JSON.stringify(newCandidates));
+            document.getElementById('directorMessage').textContent = '候選人已更新！';
+            document.getElementById('directorCandidates').value = '';
+        }
+
+        function addSupervisorCandidates() {
+            const input = document.getElementById('supervisorCandidates').value;
+            const newCandidates = input.split('.').filter(c => c.trim());
+            if (newCandidates.length > 17) {
+                alert('候選人數量不能超過17位！');
+                return;
+            }
+            localStorage.setItem('supervisorCandidates', JSON.stringify(newCandidates));
+            document.getElementById('supervisorMessage').textContent = '候選人已更新！';
+            document.getElementById('supervisorCandidates').value = '';
+        }
+
+        function addDirectorVerificationCodes() {
+            const input = document.getElementById('directorVerificationCodes').value;
+            const newCodes = input.split('.').filter(c => c.trim());
+            const existingCodes = new Set(JSON.parse(localStorage.getItem('directorVerificationCodes') || '[]'));
+            
+            newCodes.forEach(code => {
+                existingCodes.add(code);
+            });
+
+            localStorage.setItem('directorVerificationCodes', JSON.stringify([...existingCodes]));
+            
+            document.getElementById('directorCodesMessage').textContent = '理事驗證碼已更新！';
+            document.getElementById('directorVerificationCodes').value = '';
+        }
+
+        function addSupervisorVerificationCodes() {
+            const input = document.getElementById('supervisorVerificationCodes').value;
+            const newCodes = input.split('.').filter(c => c.trim());
+            const existingCodes = new Set(JSON.parse(localStorage.getItem('supervisorVerificationCodes') || '[]'));
+            
+            newCodes.forEach(code => {
+                existingCodes.add(code);
+            });
+
+            localStorage.setItem('supervisorVerificationCodes', JSON.stringify([...existingCodes]));
+            
+            document.getElementById('supervisorCodesMessage').textContent = '監事驗證碼已更新！';
+            document.getElementById('supervisorVerificationCodes').value = '';
+        }
+    </script>
+</body>
+</html> 
