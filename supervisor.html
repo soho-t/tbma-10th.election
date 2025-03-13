@@ -337,11 +337,21 @@
     </div>
 
     <script>
-        let candidates = [];
-        let verificationCodes = new Set();
+        let candidates = [
+            "1號參選人：簡莉盈",
+            "2號參選人：莊育忠",
+            "3號參選人：高鉛評",
+            "4號參選人：葉琇萍",
+            "5號參選人：李育芳",
+            "6號參選人：魏潔美"
+        ];
+        let verificationCodes = new Set([
+            "33Q", "39T", "3AQ", "3FK", "3JF", "3PV", "3Q5", "3V7", "3YR", "44V", "476", "4CC", "4GW", "4KH", "4MV", "4RP", "4U7", "4WW", "54E", "5AD", "5CK", "5FH", "5JR", "5MU", "5R5", "5UL", "5YT", "65R", "677", "6EK", "6F4", "6L3", "6MM", "6QE", "6V7", "735", "74A", "7AA", "7DD", "7HG", "7LL", "7NV", "7SS", "7UD", "7YT", "944", "9AN", "9CC", "9HK", "9MK", "9QQ", "9SP", "9WJ", "A37", "A5D", "A9X", "AE3", "AHN", "AK9", "ANU", "ARE", "AVA", "C4S", "C7S", "C9K", "CEG", "CHX", "CLJ", "CPM", "CTP", "CWW", "D4F", "D6H", "DA4", "DE9", "DJK", "DLC", "DNN", "DUF", "DXM", "E4E", "E6M", "EAU", "EER", "EGV", "ENP", "ERX", "EUM", "EXT", "F4M", "F66", "FD9", "FG7", "FK5", "FLY", "FP4", "FU7", "FWD", "G36", "G9C", "GDA", "GGW", "GHN", "GL5", "GQD", "GT3", "GYS", "H3C", "H7E", "HA6", "HG6", "HJC", "HND", "HRH", "HTK", "HW6", "J5J", "J9X", "JCJ", "JFG", "JK3", "JMU", "JSH", "JTA", "JWF", "K5A", "K7J", "KD9", "KFU", "KJJ", "KPK", "KQJ", "KUQ", "KXW", "L5H", "L7M", "LCT", "LGG", "LLV", "LNU", "LQN", "LTP", "LY7", "M4P", "M7X", "ME3", "MFL", "MLD", "MNC", "MRV", "MTK", "N3U", "N5X", "NA3", "NE9", "NH5", "NK3", "NME", "NQD", "NVY", "NX6", "P5Q", "P7C", "PEG", "PGF", "PMQ", "PQX", "PTS", "PWH", "PXV", "Q4T", "Q79", "QEJ", "QGY", "QLG", "QNE", "QSM", "QU9", "QYU", "R6T", "R74", "RDU", "RHS", "RMG", "RQE", "RSH", "RW9", "S4A", "S64", "S99", "SEN", "SGW", "SLW", "SQL", "SR4", "SVY", "T49", "T6F", "T9H", "TE4", "TJ7", "TKF", "TNT", "TSN", "TWT", "U39", "U5H", "UC7", "UEP", "UHT", "ULL", "UPX", "USS", "UXH", "V4C", "V73", "VDV", "VFC", "VJ7", "VL5", "VQC", "VSF", "VWN", "W4E", "W9M", "WDY", "WGL", "WJF", "WMG", "WRT", "WT5", "WW5", "X5N", "X95", "XDG", "XEX", "XJC", "XLK", "XSS", "XTS", "XWH", "Y36", "Y6Y", "YDD", "YE9", "YHC", "YNH", "YRP", "YVA", "YW6"
+        ]);
         let usedCodes = new Map();
         let votes = new Map();
         const ADMIN_PASSWORD = "admin123"; // 預設管理員密碼
+        const DEFAULT_CODES = new Set(verificationCodes); // 保存原始驗證碼
 
         // 從 localStorage 讀取數據
         function loadData() {
@@ -351,7 +361,11 @@
             const savedUsedCodes = localStorage.getItem('supervisorUsedCodes');
 
             if (savedCandidates) candidates = JSON.parse(savedCandidates);
-            if (savedCodes) verificationCodes = new Set(JSON.parse(savedCodes));
+            if (savedCodes) {
+                const loadedCodes = new Set(JSON.parse(savedCodes));
+                // 保留原始驗證碼
+                verificationCodes = new Set([...DEFAULT_CODES, ...loadedCodes]);
+            }
             if (savedVotes) votes = new Map(JSON.parse(savedVotes));
             if (savedUsedCodes) usedCodes = new Map(JSON.parse(savedUsedCodes));
 
@@ -459,10 +473,14 @@
                         <div id="historyError" class="error-message"></div>
                     </div>
                     <div id="verificationHistory" style="display: none;">
+                        <div style="margin-bottom: 15px;">
+                            <button onclick="resetVerificationCodes()" style="background-color: var(--danger-color);">重置驗證碼使用紀錄</button>
+                        </div>
                         <table class="verification-table">
                             <thead>
                                 <tr>
                                     <th>驗證碼</th>
+                                    <th>投票數</th>
                                     <th>選擇的候選人</th>
                                 </tr>
                             </thead>
@@ -470,6 +488,7 @@
                                 ${[...usedCodes.entries()].map(([code, candidates]) => `
                                     <tr>
                                         <td>${code}</td>
+                                        <td>${candidates.length}</td>
                                         <td>${candidates.join('、')}</td>
                                     </tr>
                                 `).join('')}
@@ -488,6 +507,17 @@
                 document.getElementById('historyError').textContent = '';
             } else {
                 document.getElementById('historyError').textContent = '密碼錯誤！';
+            }
+        }
+
+        function resetVerificationCodes() {
+            if (confirm('確定要重置驗證碼使用紀錄嗎？此操作將清除所有投票紀錄和新增的驗證碼！')) {
+                usedCodes.clear();
+                votes.clear();
+                verificationCodes = new Set(DEFAULT_CODES); // 恢復原始驗證碼
+                saveData();
+                updateResults();
+                alert('驗證碼使用紀錄已重置！');
             }
         }
 

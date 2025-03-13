@@ -6,16 +6,18 @@
     <title>理事投票 - 台北市公寓大廈管理維護商業同業公會</title>
     <style>
         :root {
-            --primary-color: #2196F3;
-            --primary-hover: #1976D2;
-            --danger-color: #f44336;
-            --danger-hover: #d32f2f;
-            --success-color: #4CAF50;
-            --success-hover: #45a049;
-            --text-color: #333;
-            --border-color: #e0e0e0;
-            --bg-color: #f5f5f5;
+            --primary-color: #2c3e50;
+            --primary-hover: #34495e;
+            --danger-color: #e74c3c;
+            --danger-hover: #c0392b;
+            --success-color: #27ae60;
+            --success-hover: #219a52;
+            --text-color: #2c3e50;
+            --border-color: #ecf0f1;
+            --bg-color: #f8f9fa;
             --card-bg: #ffffff;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
         }
 
         body {
@@ -29,22 +31,26 @@
 
         .header {
             text-align: center;
-            padding: 20px;
-            background-color: var(--card-bg);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
+            box-shadow: var(--shadow);
+            margin-bottom: 30px;
+            color: white;
         }
 
         .header h1 {
-            color: var(--primary-color);
+            color: white;
             margin: 0;
-            font-size: 1.8em;
+            font-size: 2.2em;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
         }
 
         .header h2 {
-            color: var(--primary-color);
-            margin: 10px 0 0;
-            font-size: 1.5em;
+            color: rgba(255,255,255,0.9);
+            margin: 15px 0 0;
+            font-size: 1.6em;
+            font-weight: 500;
         }
 
         .container {
@@ -58,11 +64,17 @@
 
         .section {
             background-color: var(--card-bg);
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            padding: 35px;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
             position: relative;
             overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.1);
         }
 
         .section::before {
@@ -71,27 +83,18 @@
             top: 0;
             left: 0;
             right: 0;
-            height: 4px;
+            height: 5px;
             background: linear-gradient(90deg, var(--primary-color), var(--primary-hover));
         }
 
         .section h2 {
             color: var(--primary-color);
-            font-size: 1.8em;
-            margin: 0 0 25px 0;
+            font-size: 2em;
+            margin: 0 0 30px 0;
             padding-bottom: 15px;
             border-bottom: 2px solid var(--border-color);
             position: relative;
-        }
-
-        .section h2::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 0;
-            width: 50px;
-            height: 2px;
-            background-color: var(--primary-color);
+            font-weight: 600;
         }
 
         .section:first-child {
@@ -111,25 +114,28 @@
         .candidate-grid {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
-            gap: 15px;
-            margin-top: 20px;
+            gap: 20px;
+            margin-top: 25px;
         }
 
         .candidate-item {
-            padding: 15px;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            background-color: #fff;
-            transition: all 0.2s;
+            padding: 20px;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            background-color: white;
+            transition: var(--transition);
+            cursor: pointer;
         }
 
         .candidate-item:hover {
             border-color: var(--primary-color);
-            box-shadow: 0 2px 8px rgba(33, 150, 243, 0.2);
+            box-shadow: 0 5px 15px rgba(44, 62, 80, 0.1);
+            transform: translateY(-3px);
         }
 
         .candidate-item input[type="checkbox"] {
-            margin-right: 8px;
+            margin-right: 10px;
+            transform: scale(1.2);
         }
 
         .result-item {
@@ -145,47 +151,51 @@
 
         input[type="text"], input[type="password"] {
             width: 100%;
-            padding: 12px;
-            margin: 8px 0;
+            padding: 15px;
+            margin: 10px 0;
             border: 2px solid var(--border-color);
-            border-radius: 6px;
+            border-radius: 10px;
             font-size: 16px;
-            transition: border-color 0.2s;
+            transition: var(--transition);
+            box-sizing: border-box;
         }
 
         input[type="text"]:focus, input[type="password"]:focus {
             border-color: var(--primary-color);
             outline: none;
-            box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.1);
+            box-shadow: 0 0 0 4px rgba(44, 62, 80, 0.1);
         }
 
         button {
-            padding: 12px 24px;
+            padding: 15px 30px;
             background-color: var(--primary-color);
             color: white;
             border: none;
-            border-radius: 6px;
+            border-radius: 10px;
             cursor: pointer;
             font-size: 16px;
-            font-weight: 500;
-            transition: all 0.2s;
+            font-weight: 600;
+            transition: var(--transition);
             width: 100%;
-            margin-top: 10px;
+            margin-top: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         button:hover {
             background-color: var(--primary-hover);
-            transform: translateY(-1px);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
 
         .error-message {
             color: var(--danger-color);
-            margin: 8px 0;
-            padding: 8px;
-            background-color: #ffebee;
-            border-radius: 4px;
+            margin: 10px 0;
+            padding: 12px;
+            background-color: #fdf3f2;
+            border-radius: 8px;
             border-left: 4px solid var(--danger-color);
+            font-weight: 500;
         }
 
         .back-button {
@@ -194,14 +204,19 @@
             left: 20px;
             background-color: var(--primary-color);
             color: white;
-            padding: 10px 20px;
-            border-radius: 6px;
+            padding: 12px 25px;
+            border-radius: 10px;
             text-decoration: none;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            font-weight: 600;
+            z-index: 1000;
         }
 
         .back-button:hover {
             background-color: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
 
         .results-section {
@@ -217,13 +232,17 @@
 
         .verification-table {
             width: 100%;
-            border-collapse: collapse;
-            margin-top: 10px;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-top: 15px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
         }
 
         .verification-table th,
         .verification-table td {
-            padding: 12px;
+            padding: 15px;
             text-align: left;
             border: 1px solid var(--border-color);
         }
@@ -231,6 +250,7 @@
         .verification-table th {
             background-color: var(--primary-color);
             color: white;
+            font-weight: 600;
         }
 
         .verification-table tr:nth-child(even) {
@@ -238,7 +258,7 @@
         }
 
         .verification-table tr:hover {
-            background-color: #e9ecef;
+            background-color: #f1f3f5;
         }
 
         .result-grid {
@@ -249,55 +269,68 @@
         }
 
         .result-card {
-            background-color: #f8f9fa;
-            border-radius: 8px;
-            padding: 15px;
-            border: 1px solid var(--border-color);
+            background-color: white;
+            border-radius: 15px;
+            padding: 20px;
+            border: 2px solid var(--border-color);
             text-align: center;
+            transition: var(--transition);
+        }
+
+        .result-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.1);
         }
 
         .result-card .rank {
-            font-size: 1.2em;
-            font-weight: bold;
+            font-size: 1.4em;
+            font-weight: 700;
             color: var(--primary-color);
-            margin-bottom: 8px;
+            margin-bottom: 10px;
         }
 
         .result-card .name {
-            font-size: 1.1em;
-            margin-bottom: 8px;
+            font-size: 1.2em;
+            margin-bottom: 10px;
+            color: var(--text-color);
         }
 
         .result-card .votes {
             color: var(--success-color);
-            font-weight: bold;
+            font-weight: 700;
+            font-size: 1.3em;
         }
 
         .total-votes {
             text-align: center;
-            font-size: 1.2em;
+            font-size: 1.4em;
             color: var(--primary-color);
-            margin-bottom: 20px;
-            padding: 10px;
-            background-color: #e3f2fd;
-            border-radius: 8px;
+            margin-bottom: 25px;
+            padding: 15px;
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: 12px;
+            font-weight: 600;
         }
 
         @media (max-width: 768px) {
             .container {
-                grid-template-columns: 1fr;
+                padding: 15px;
             }
             
             .header h1 {
-                font-size: 1.5em;
+                font-size: 1.8em;
             }
 
             .header h2 {
-                font-size: 1.2em;
+                font-size: 1.3em;
             }
 
             .candidate-grid {
                 grid-template-columns: repeat(3, 1fr);
+            }
+
+            .section {
+                padding: 20px;
             }
 
             .verification-table {
@@ -337,11 +370,32 @@
     </div>
 
     <script>
-        let candidates = [];
-        let verificationCodes = new Set();
+        let candidates = [
+            "1號參選人：張軒誠",
+            "2號參選人：詹前炫",
+            "3號參選人：陳品峯",
+            "4號參選人：連維全",
+            "5號參選人：林之麒",
+            "6號參選人：潘睿彬",
+            "7號參選人：宮武保朝",
+            "8號參選人：陳俊宏",
+            "9號參選人：王將鈞",
+            "10號參選人：吳健興",
+            "11號參選人：顧家寶",
+            "12號參選人：郭紀子",
+            "13號參選人：許麗月",
+            "14號參選人：沈麗娟",
+            "15號參選人：馮耀中",
+            "16號參選人：歐陽仲彥",
+            "17號參選人：林誠一"
+        ];
+        let verificationCodes = new Set([
+            "355", "37w", "3d9", "3fh", "3jk", "3pq", "3tz", "3xq", "3yq", "45u", "4bh", "4ct", "4hs", "4k4", "4p7", "4v7", "4yx", "4zx", "57w", "5cs", "5fu", "5j5", "5mp", "5sa", "5wg", "5y3", "63f", "677", "6cx", "6g3", "6jd", "6nb", "6s4", "6v9", "6zb", "75b", "7bx", "7d9", "7jq", "7nf", "7sg", "7td", "7zb", "94k", "99v", "9bs", "9fz", "9jg", "9qn", "9tu", "9va", "9zx", "a4g", "a7f", "ae6", "afd", "akw", "apb", "auc", "ayh", "b3g", "b53", "bcf", "bdf", "bhb", "bm4", "brh", "bt4", "bxe", "c3y", "c7k", "cd9", "ce5", "ckq", "cpk", "csu", "cxu", "czn", "d7s", "dbu", "deg", "dg7", "dnh", "dqf", "dut", "dwq", "dzj", "e6a", "ecf", "ee5", "ejz", "eps", "ers", "evn", "exn", "f6f", "f99", "fdm", "fge", "fkh", "fpg", "fuj", "fxg", "fzf", "g6e", "gcm", "gfq", "ggq", "gky", "gsg", "gtc", "gwn", "h4g", "h75", "hdk", "hgw", "hjr", "hqm", "hrr", "hvg", "hzm", "j6b", "jar", "jes", "jjw", "jkh", "jrb", "jvm", "jwc", "k4k", "k9x", "kam", "kdz", "kkw", "knv", "kqh", "kva", "kxr", "m56", "m7p", "mbt", "mgc", "mj3", "mqm", "mur", "mw4", "n4q", "n7j", "nb6", "ndg", "nj9", "nmc", "nq3", "nup", "nyr", "p3k", "p6c", "pcx", "per", "pkz", "pmq", "pr9", "pwr", "pzz", "q45", "q7g", "qdg", "qfn", "qn3", "qqu", "que", "qxt", "r46", "r6u", "rcv", "rev", "rjn", "rma", "rrm", "ruc", "rz7", "s4p", "s77", "scj", "sg9", "skb", "sn3", "srv", "suz", "sya", "t6x", "tae", "td4", "tgn", "tnu", "tq6", "tsa", "tyr", "u4y", "u6n", "ubd", "udv", "ujd", "umt", "utn", "uvf", "uyg", "v5x", "v9a", "vdj", "vga", "vj5", "vp4", "vuu", "vxr", "vy4", "w6c", "wau", "wdb", "wgu", "wk6", "wru", "wuc", "wxs", "x3b", "x66", "xay", "xem", "xhr", "xmn", "xsp", "xu9", "xx3", "y6q", "ybz", "ydc", "ygb", "ynq", "yrr", "yte", "yyj", "z4p", "z7t", "z95", "zeq", "zks", "znc", "zsn", "zvr", "zzc"
+        ]);
         let usedCodes = new Map();
         let votes = new Map();
         const ADMIN_PASSWORD = "admin123"; // 預設管理員密碼
+        const DEFAULT_CODES = new Set(verificationCodes); // 保存原始驗證碼
 
         // 從 localStorage 讀取數據
         function loadData() {
@@ -351,7 +405,11 @@
             const savedUsedCodes = localStorage.getItem('directorUsedCodes');
 
             if (savedCandidates) candidates = JSON.parse(savedCandidates);
-            if (savedCodes) verificationCodes = new Set(JSON.parse(savedCodes));
+            if (savedCodes) {
+                const loadedCodes = new Set(JSON.parse(savedCodes));
+                // 保留原始驗證碼
+                verificationCodes = new Set([...DEFAULT_CODES, ...loadedCodes]);
+            }
             if (savedVotes) votes = new Map(JSON.parse(savedVotes));
             if (savedUsedCodes) usedCodes = new Map(JSON.parse(savedUsedCodes));
 
@@ -459,10 +517,14 @@
                         <div id="historyError" class="error-message"></div>
                     </div>
                     <div id="verificationHistory" style="display: none;">
+                        <div style="margin-bottom: 15px;">
+                            <button onclick="resetVerificationCodes()" style="background-color: var(--danger-color);">重置驗證碼使用紀錄</button>
+                        </div>
                         <table class="verification-table">
                             <thead>
                                 <tr>
                                     <th>驗證碼</th>
+                                    <th>投票數</th>
                                     <th>選擇的候選人</th>
                                 </tr>
                             </thead>
@@ -470,6 +532,7 @@
                                 ${[...usedCodes.entries()].map(([code, candidates]) => `
                                     <tr>
                                         <td>${code}</td>
+                                        <td>${candidates.length}</td>
                                         <td>${candidates.join('、')}</td>
                                     </tr>
                                 `).join('')}
@@ -488,6 +551,17 @@
                 document.getElementById('historyError').textContent = '';
             } else {
                 document.getElementById('historyError').textContent = '密碼錯誤！';
+            }
+        }
+
+        function resetVerificationCodes() {
+            if (confirm('確定要重置驗證碼使用紀錄嗎？此操作將清除所有投票紀錄和新增的驗證碼！')) {
+                usedCodes.clear();
+                votes.clear();
+                verificationCodes = new Set(DEFAULT_CODES); // 恢復原始驗證碼
+                saveData();
+                updateResults();
+                alert('驗證碼使用紀錄已重置！');
             }
         }
 
